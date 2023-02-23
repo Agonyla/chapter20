@@ -98,4 +98,8 @@ public class Recorder {
     public static void addAllEnemyTankNum() {
         Recorder.allEnemyTankNum++;
     }
+
+    public static String getRecordFile() {
+        return recordFile;
+    }
 }

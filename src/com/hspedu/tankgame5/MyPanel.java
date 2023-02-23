@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 import java.util.Vector;
 
 /**
@@ -30,8 +31,13 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
 
     public MyPanel(String key) {
 
-
-        nodes = Recorder.getNodesAndEnemyTank();
+        File file = new File(Recorder.getRecordFile());
+        if (file.exists()) {
+            nodes = Recorder.getNodesAndEnemyTank();
+        } else {
+            System.out.println("文件不存在,只能开启新游戏");
+            key = "1";
+        }
         // 将enemyTanks 传给 Recorder的 enemyTanks
         Recorder.setEnemyTanks(enemyTanks);
         myTank = new MyTank(500, 500);
@@ -84,6 +90,10 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         image1 = Toolkit.getDefaultToolkit().getImage(MyPanel.class.getResource("/bomb_1.gif"));
         image2 = Toolkit.getDefaultToolkit().getImage(MyPanel.class.getResource("/bomb_2.gif"));
         image3 = Toolkit.getDefaultToolkit().getImage(MyPanel.class.getResource("/bomb_3.gif"));
+
+        // 播放音乐
+        AePlayWave aePlayWave = new AePlayWave("src\\111.wav");
+        aePlayWave.start();
     }
 
 
@@ -95,7 +105,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         g.setFont(font);
 
         g.drawString("您击毁的坦克数量", 1020, 30);
-        
+
         g.drawString(Recorder.getAllEnemyTankNum() + "", 1080, 100);
 
         drawTank(1020, 60, g, 0, 1);
