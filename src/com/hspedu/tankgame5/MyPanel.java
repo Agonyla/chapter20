@@ -27,6 +27,8 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     Image image3 = null;
 
     public MyPanel() {
+        // 将enemyTanks 传给 Recorder的 enemyTanks
+        Recorder.setEnemyTanks(enemyTanks);
         myTank = new MyTank(500, 500);
         myTank.setSpeed(10);
 
