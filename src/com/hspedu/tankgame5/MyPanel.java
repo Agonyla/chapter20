@@ -19,6 +19,8 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
 
     Vector<EnemyTank> enemyTanks = new Vector<>();
 
+    Vector<Node> nodes = new Vector<>();
+
     int enemyTankSize = 4;
 
     Vector<Bomb> bombs = new Vector<>();
@@ -26,27 +28,58 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     Image image2 = null;
     Image image3 = null;
 
-    public MyPanel() {
+    public MyPanel(String key) {
+
+
+        nodes = Recorder.getNodesAndEnemyTank();
         // 将enemyTanks 传给 Recorder的 enemyTanks
         Recorder.setEnemyTanks(enemyTanks);
         myTank = new MyTank(500, 500);
         myTank.setSpeed(10);
 
-        for (int i = 0; i < enemyTankSize; i++) {
-            EnemyTank enemyTank = new EnemyTank(200 * (1 + i), 0);
+        switch (key) {
+            case "1" -> {
+                for (int i = 0; i < enemyTankSize; i++) {
+                    EnemyTank enemyTank = new EnemyTank(200 * (1 + i), 0);
 
-            // 把enemyTanks传给每一个enemyTank
-            enemyTank.setEnemyTanks(enemyTanks);
+                    // 把enemyTanks传给每一个enemyTank
+                    enemyTank.setEnemyTanks(enemyTanks);
 
-            enemyTank.setDirection(2);
-            new Thread(enemyTank).start();
+                    enemyTank.setDirection(2);
+                    new Thread(enemyTank).start();
 
-            enemyTanks.add(enemyTank);
-            Shot shot = new Shot(enemyTank.getX() + 20, enemyTank.getY() + 60, enemyTank.getDirection());
-            //
-            enemyTank.shots.add(shot);
-            new Thread(shot).start();
+                    enemyTanks.add(enemyTank);
+                    Shot shot = new Shot(enemyTank.getX() + 20, enemyTank.getY() + 60, enemyTank.getDirection());
+                    //
+                    enemyTank.shots.add(shot);
+                    new Thread(shot).start();
+                }
+            }
+            // 继续上局游戏
+            case "2" -> {
+                for (int i = 0; i < nodes.size(); i++) {
+                    Node node = nodes.get(i);
+
+                    EnemyTank enemyTank = new EnemyTank(node.getX(), node.getY());
+                    enemyTank.setDirection(enemyTank.getDirection());
+                    // 把enemyTanks传给每一个enemyTank
+                    enemyTank.setEnemyTanks(enemyTanks);
+
+
+                    new Thread(enemyTank).start();
+
+                    enemyTanks.add(enemyTank);
+                    Shot shot = new Shot(enemyTank.getX() + 20, enemyTank.getY() + 60, enemyTank.getDirection());
+                    //
+                    enemyTank.shots.add(shot);
+                    new Thread(shot).start();
+                }
+            }
+            default -> {
+
+            }
         }
+
 
         image1 = Toolkit.getDefaultToolkit().getImage(MyPanel.class.getResource("/bomb_1.gif"));
         image2 = Toolkit.getDefaultToolkit().getImage(MyPanel.class.getResource("/bomb_2.gif"));
@@ -62,7 +95,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         g.setFont(font);
 
         g.drawString("您击毁的坦克数量", 1020, 30);
-
+        
         g.drawString(Recorder.getAllEnemyTankNum() + "", 1080, 100);
 
         drawTank(1020, 60, g, 0, 1);

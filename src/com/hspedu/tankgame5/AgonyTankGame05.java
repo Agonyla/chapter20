@@ -3,6 +3,7 @@ package com.hspedu.tankgame5;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Scanner;
 
 /**
  * @Author Agony
@@ -11,13 +12,22 @@ import java.awt.event.WindowEvent;
  */
 public class AgonyTankGame05 extends JFrame {
 
+    static Scanner scanner = new Scanner(System.in);
+
+    static String key = "";
+
     public static void main(String[] args) {
+
+
         new AgonyTankGame05();
     }
 
     public AgonyTankGame05() {
 
-        MyPanel myPanel = new MyPanel();
+        System.out.println("请输入选择 1: 新游戏    2: 继续上局");
+        key = scanner.next();
+        MyPanel myPanel = new MyPanel(key);
+
         new Thread(myPanel).start();
         this.add(myPanel);
         this.addKeyListener(myPanel);
