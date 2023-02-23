@@ -51,10 +51,28 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         image3 = Toolkit.getDefaultToolkit().getImage(MyPanel.class.getResource("/bomb_3.gif"));
     }
 
+
+    public void showInfo(Graphics g) {
+        g.setColor(Color.BLACK);
+
+        Font font = new Font("宋体", Font.BOLD, 25);
+
+        g.setFont(font);
+
+        g.drawString("您击毁的坦克数量", 1020, 30);
+
+        g.drawString(Recorder.getAllEnemyTankNum() + "", 1080, 100);
+
+        drawTank(1020, 60, g, 0, 1);
+
+
+    }
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);
         g.fillRect(0, 0, 1000, 750);
+        showInfo(g);
 
         if (myTank != null && myTank.isLive) {
             drawTank(myTank.getX(), myTank.getY(), g, myTank.getDirection(), 0);
@@ -204,6 +222,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
 
                     if (tank instanceof EnemyTank) {
                         enemyTanks.remove((EnemyTank) tank);
+                        Recorder.addAllEnemyTankNum();
                     }
 
                     bombs.add(new Bomb(tank.getX(), tank.getY()));
@@ -218,6 +237,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
 
                     if (tank instanceof EnemyTank) {
                         enemyTanks.remove((EnemyTank) tank);
+                        Recorder.addAllEnemyTankNum();
                     }
 
                     bombs.add(new Bomb(tank.getX(), tank.getY()));

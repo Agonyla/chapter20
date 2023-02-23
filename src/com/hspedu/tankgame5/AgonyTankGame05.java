@@ -1,6 +1,8 @@
 package com.hspedu.tankgame5;
 
 import javax.swing.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  * @Author Agony
@@ -20,11 +22,19 @@ public class AgonyTankGame05 extends JFrame {
         this.add(myPanel);
         this.addKeyListener(myPanel);
 
-        this.setSize(1000, 750);
+        this.setSize(1300, 950);
         this.setLocationRelativeTo(null);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
+
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                Recorder.keepRecord();
+                System.exit(0);
+            }
+        });
     }
 
 }
